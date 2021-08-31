@@ -3,6 +3,7 @@ package me.txb1.render;
 import eu.firedata.system.controller.annotations.method.Construct;
 import eu.firedata.system.controller.annotations.type.Component;
 import eu.firedata.system.controller.annotations.variable.Fill;
+import lombok.Getter;
 import lombok.SneakyThrows;
 import me.txb1.render.utils.Point;
 import me.txb1.render.utils.Stick;
@@ -18,6 +19,7 @@ import java.util.*;
  * @project NetSimulation
  */
 
+@Getter
 @Component
 public class Renderer {
 
@@ -30,18 +32,26 @@ public class Renderer {
 
     private boolean running = false;
 
+    //CHANGE BELOW : ORIGIN : 18, 17, 50, 50
+
+    private final int xCount = 18 * 3;
+    private final int yCount = 17 * 3;
+
+    private final int xAdd = 50 / 3;
+    private final int yAdd = 50 / 3;
+
     @Construct
     public void handleConstruct() {
-        this.window.startRenderThread(1000 / 50);
+        this.window.startRenderThread(1000 / 100);
 
-        for (int i = 1; i <= 18; i++) {
-            this.points.add(Point.create(i * 50, 50, true));
+        for (int i = 1; i <= this.xCount; i++) {
+            this.points.add(Point.create(i * this.xAdd, this.yAdd, true));
         }
 
 
-        for (int y = 2; y <= 17; y++) {
-            for (int i = 1; i <= 18; i++) {
-                this.points.add(Point.create(i * 50, y * 50, false));
+        for (int y = 2; y <= this.yCount; y++) {
+            for (int i = 1; i <= this.xCount; i++) {
+                this.points.add(Point.create(i * this.xAdd, y * this.yAdd, false));
             }
         }
 
@@ -53,8 +63,8 @@ public class Renderer {
                     this.sticks.add(new Stick(p, left));
             }
 
-            if (i - 18 >= 0) {
-                Point up = this.points.get(i - 18);
+            if (i - this.xCount >= 0) {
+                Point up = this.points.get(i - this.xCount);
                 this.sticks.add(new Stick(p, up));
             }
         }
@@ -64,7 +74,7 @@ public class Renderer {
             public void run() {
                 sticks.remove(new Random().nextInt(sticks.size()));
             }
-        }, 0, 500);
+        }, 0, 50);
 
         new Timer().schedule(new TimerTask() {
             @Override
@@ -105,10 +115,10 @@ public class Renderer {
             }
 
 
-            this.points.forEach(point -> {
+            this.points.stream().filter(point -> point.locked).forEach(point -> {
                 point.draw(g2d, 10);
             });
-            this.sticks.forEach(stick -> {
+            this.sticks.stream().filter(stick -> stick.pointB.position.y < 1000 && stick.pointA.position.y < 1000).forEach(stick -> {
                 stick.draw(g2d);
             });
         } catch (Exception ignored) {

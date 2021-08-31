@@ -19,6 +19,9 @@ public class Point {
     }
 
     public void draw(Graphics2D g2d, int i) {
-        g2d.drawRect((int) this.position.x - i, (int) this.position.y - i, i * 2, i * 2);
+        if (!this.locked) return;
+        g2d.setColor(Color.RED);
+        //g2d.drawRoundRect((int) this.position.x - i, (int) this.position.y - i, i * 2, i * 2, i * 2, i * 2);
+        g2d.fillRoundRect((int) this.position.x - i, (int) this.position.y - i, i * 2, i * 2, i * 2, i * 2);
     }
 }
