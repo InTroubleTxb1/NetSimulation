@@ -20,7 +20,7 @@ public class Vector {
         return new Vector(this.x, this.y);
     }
 
-    public Vector devide(Vector vector) {
+    public Vector divide(Vector vector) {
         if (vector.x != 0)
             this.x /= vector.x;
         if (vector.y != 0)

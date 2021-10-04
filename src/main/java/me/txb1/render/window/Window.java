@@ -7,9 +7,14 @@ import eu.firedata.system.controller.annotations.type.Component;
 import eu.firedata.system.controller.annotations.variable.Fill;
 import lombok.Getter;
 import me.txb1.render.Renderer;
+import me.txb1.utils.KeyBoardUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  * @author Txb1 at 30.08.2021
@@ -39,6 +44,51 @@ public class Window extends JFrame {
 
         this.add(this.renderPanel);
         this.pack();
+
+        this.renderPanel.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                KeyBoardUtils.keyTyped(e);
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                KeyBoardUtils.keyPressed(e);
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                KeyBoardUtils.keyReleased(e);
+            }
+        });
+
+        this.renderPanel.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                KeyBoardUtils.mouseClicked(e);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                KeyBoardUtils.mousePressed(e);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                KeyBoardUtils.mouseReleased(e);
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                KeyBoardUtils.mouseEntered(e);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                KeyBoardUtils.mouseExited(e);
+            }
+
+        });
 
         GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
         int width = (int) env.getMaximumWindowBounds().getSize().getWidth();
